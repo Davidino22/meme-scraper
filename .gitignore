@@ -10,3 +10,4 @@ yarn-error.log*
 *.tsbuildules/@upleveled/eslint-config-upleveled/templates/{*,.eslint*} .
 grep -Fxq .eslintcache .gitignore || printf n.eslintcache >> .gitignore
 grep -Fdinfo
+*.tsbuildinfo
