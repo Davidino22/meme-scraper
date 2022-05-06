@@ -1,27 +1,15 @@
-import * as fs from 'fs';
+import fs from 'node:fs';
+import https from 'node:https';
 import fetch from 'node-fetch';
 
-const url = 'https://memegen-link-examples-upleveled.netlify.app/';
+// get all the packacges i need for task ;
 
-const path = './memes';
-fs.access(path, (error) => {
-    if (error) {
-        fs.mkdir(path, (error) => {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('New Directory created ');
-            }
-        });
-    } else {
-        console.log('Directory exsist');
-    }
-});
+const side = 'https://memegen-link-examples-upleveled.netlify.app/';
 
-const response = await fetch(url, { redirect: 'manual' });
+//  target https-side to get the memes as const ;
+const response = await fetch(side, { redirect: 'manual' });
 const body = await response.text();
-
-// checking if there is an memes folder, if there is not create one;
+// after get a response of the side i get the the HTML document of side
 
 const src = [];
 const pic = /<img[^>]+src="?([^"\s]+)"?\s*\/>/g;
@@ -31,10 +19,29 @@ while ((i = pic.exec(str))) {
     src.push(i[1]);
 }
 
-const tensrc = [];
-tensrc.push(src.slice(0, 10));
+// get the image urls
 
-//getting the URLs of the images from the HTML side and put them in array tensrc;
+const dir = './memes';
 
-const img = tensrc;
-//put tensrc in const img ;
+// create a const for the memes folder
+
+if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+}
+
+for (let i = 0; i < 10; i++) {
+    const img = src[i];
+    https.get(img, (res) => {
+        const path = `memes/1${i + 1}.jpg`;
+        const write = fs.createWriteStream(path);
+
+        res.pipe(write);
+
+        write.on('finish', () => {
+            write.close();
+        });
+    });
+}
+console.log('images are in memes folder');
+
+// slice ten image urls and put them in a folder
