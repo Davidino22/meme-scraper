@@ -29,10 +29,10 @@ if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
 
-for (let i = 0; i < 10; i++) {
-    const img = src[i];
+for (let x = 0; x < 10; x++) {
+    const img = src[x];
     https.get(img, (res) => {
-        const path = `memes/0${i + 1}.jpg`;
+        const path = `memes/0${x + 1}.jpg`;
         const write = fs.createWriteStream(path);
 
         res.pipe(write);
