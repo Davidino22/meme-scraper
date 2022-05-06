@@ -32,7 +32,7 @@ if (!fs.existsSync(dir)) {
 for (let i = 0; i < 10; i++) {
     const img = src[i];
     https.get(img, (res) => {
-        const path = `memes/1${i + 1}.jpg`;
+        const path = `memes/0${i + 1}.jpg`;
         const write = fs.createWriteStream(path);
 
         res.pipe(write);
